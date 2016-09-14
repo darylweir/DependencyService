@@ -2,7 +2,10 @@ package com.darylweir.depservice
 
 import org.scalatra._
 
-class FirstServlet extends MyfirstwebappStack {
+
+class CoreServlet extends DepServiceStack {
+  
+  val datastore = new DataModel
 
   get("/") {
     <html>
@@ -16,6 +19,7 @@ class FirstServlet extends MyfirstwebappStack {
   get("/dependencies/?") {
     val variable = params.getOrElse("variable", halt(400,"No value specified"))
     <p>The requested variable is {variable}</p>
+    <p>The datastore contains {datastore.getlist(variable)}</p>
   }
 
 }

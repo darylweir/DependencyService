@@ -6,15 +6,15 @@ import com.earldouglas.xwp.JettyPlugin
 import com.mojolly.scalate.ScalatePlugin._
 import ScalateKeys._
 
-object MyfirstwebappBuild extends Build {
+object DependencyServiceBuild extends Build {
   val Organization = "com.darylweir"
-  val Name = "MyFirstWebApp"
+  val Name = "DependencyService"
   val Version = "0.1"
   val ScalaVersion = "2.11.8"
   val ScalatraVersion = "2.4.1"
 
   lazy val project = Project (
-    "myfirstwebapp",
+    "depservice",
     file("."),
     settings = ScalatraPlugin.scalatraSettings ++ scalateSettings ++ Seq(
       organization := Organization,
@@ -23,13 +23,16 @@ object MyfirstwebappBuild extends Build {
       scalaVersion := ScalaVersion,
       resolvers += Classpaths.typesafeReleases,
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
+      resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
-        "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided"
+        "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
+        "org.scala-saddle" %% "saddle-core" % "1.3.+",
+        "org.scalanlp" %% "breeze" % "0.12"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
