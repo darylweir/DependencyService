@@ -19,7 +19,7 @@ class CoreServlet extends DepServiceStack {
   get("/dependencies/?") {
     val variable = params.getOrElse("variable", halt(400,"No value specified"))
     <p>The requested variable is {variable}</p>
-    <p>The datastore contains {datastore.getlist(variable)}</p>
+    <p>The datastore contains {datastore.get(variable)}</p>
   }
 
 }

@@ -3,7 +3,14 @@ package com.darylweir.depservice
 import org.saddle._
 import org.saddle.io._
 import scala.math.log
+import scala.collection.mutable.ListBuffer
 
+/**Class providing dependency lists for a given variable.
+ * 
+ * Very simple contract: 
+ * 	- contains(variable) checks if a dependency list is available for variable
+ *  - get(variable) returns the dependency list for variable, or None if not present
+ */
 class DataModel {
   
   val UNIQUE_CLASSES = List(-1,0,1)
@@ -14,22 +21,42 @@ class DataModel {
   val frame = CsvParser.parse()(file).withColIndex(0).withRowIndex(0)
   val data = frame.mapValues(CsvParser.parseInt)
   
-  ProbabilityEstimator.mutualInformation(data, UNIQUE_CLASSES, UNIQUE_CLASSES, "result_customer_was_happy","project_tries_new_ways_or_technologies")
-
+  //Create the datastore - just a HashMap since the data is small
+  var store = Map[String,List[Dependency]]()
   
-  def get: String = data.toString()
-  
-  def getlist(param:String) : String = {
-    return data.col(param).toString
+  for (key <- data.colIx.toSeq) {
+    val list = ListBuffer[Dependency]()
+    for (key2 <- data.colIx.toSeq) {
+      if (key != key2) {
+        list += Dependency(key2, ProbabilityEstimator.mutualInformation(data, 
+            UNIQUE_CLASSES, UNIQUE_CLASSES, key, key2))
+      }
+    }
+    //Sort the list and put it in the datastore
+    store = store + (key -> (list.sortBy { x => -x.mi } toList))
   }
   
-  def hasKey(variable: String) : Boolean = data.colIx.contains(variable)
+
+  
+  def get(variable: String) : Option[List[Dependency]] = store get variable
+  
+  def contains(variable: String) : Boolean = store.contains(variable)
   
   
 
   
   
 }
+
+/** Object storing one dependency.
+ *  
+ *  @param variable, the name of the dependent variable
+ *  @param mi, the mutual information
+ */
+case class Dependency(
+    variable: String,
+    mi: Double
+);
 
 /**Object for estimating probabilities and related quantities for a data sample.
  * 
