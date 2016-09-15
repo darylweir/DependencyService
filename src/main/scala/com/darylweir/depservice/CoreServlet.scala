@@ -26,10 +26,10 @@ class CoreServlet extends DepServiceStack with JacksonJsonSupport {
    * If variable is not given as a query parameter, returns a 400 bad request error.
    */
   get("/dependencies/?") {
-    val variable = params.getOrElse("variable", halt(400,Error("IncompleteRequest","Input parameter variable missing.")))
+    val variable = params.getOrElse("variable", halt(400,Error("IncompleteRequest","Query parameter 'variable' missing.")))
     datastore.get(variable) match {
       case Some(x) => x
-      case None => NotFound(Error("KeyNotFound","Dependency list for key "+variable+" was not found."))
+      case None => NotFound(Error("KeyNotFound","Dependency list for key '"+variable+"' was not found."))
     }
   }
   
@@ -43,7 +43,7 @@ class CoreServlet extends DepServiceStack with JacksonJsonSupport {
 
 }
 
-/**Simple case class to return when a bad request is made. 
+/**Simple error class to return when a bad request is made. 
  * 
  * @param errorType, a name for the class of error
  * @param description, a more detailed description of the error.

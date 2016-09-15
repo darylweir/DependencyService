@@ -16,7 +16,7 @@ object DependencyServiceBuild extends Build {
   lazy val project = Project (
     "depservice",
     file("."),
-    settings = ScalatraPlugin.scalatraSettings ++ scalateSettings ++ Seq(
+    settings = seq(com.typesafe.sbt.SbtStartScript.startScriptForClassesSettings: _*) ++ ScalatraPlugin.scalatraSettings ++ scalateSettings ++ Seq(
       organization := Organization,
       name := Name,
       version := Version,
@@ -32,7 +32,7 @@ object DependencyServiceBuild extends Build {
         "org.scalatra" %% "scalatra-json" % "2.3.0",
         "org.json4s"   %% "json4s-jackson" % "3.2.9",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
-        "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
+        "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container;provided",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
         "org.scala-saddle" %% "saddle-core" % "1.3.+",
         "org.scalactic" %% "scalactic" % "3.0.0",
