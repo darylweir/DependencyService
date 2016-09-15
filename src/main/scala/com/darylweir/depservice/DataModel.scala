@@ -36,15 +36,31 @@ class DataModel {
     store = store + (key -> (list.sortBy { x => -x.mi } toList))
   }
   
+  var temp = data.col("result_new_doors_were_opened","retrospectives")
+  var total = 0.0
+  for (i <- UNIQUE_CLASSES) {
+    for (j <- UNIQUE_CLASSES) {
+      var p = ProbabilityEstimator.jointProbability(i, j, temp)
+      total += p
+      println(i+" "+j+" "+p)
+    }
+  }
+  println(total)
   
+  
+  /**Gets the dependency list for a given variable in the dataset.
+   * 
+   * @param variable, the name of the variable to get the dependencies for
+   * @return a List of Dependency objects for variable if one exists, or None otherwise
+   */
   def get(variable: String) : Option[List[Dependency]] = store get variable
   
+  /**Check if a dependency list exists for a given variable
+   * 
+   * @param variable, the name of the variable to check for
+   * @return true if a dependency list is available
+   */
   def contains(variable: String) : Boolean = store.contains(variable)
-  
-  
-
-  
-  
 }
 
 /** Object storing one dependency.
@@ -113,7 +129,8 @@ object ProbabilityEstimator {
     if (ser.numCols != 1) throw new IllegalArgumentException("Frame must have one column")
     if (ser.numRows == 0) throw new IllegalArgumentException("Frame is empty")
     var vec = ser.toMat.toVec
-    return 1.0 * vec.countif(_ == x) / vec.length
+    //vec.count instead of vec.length in case of missing values
+    return 1.0 * vec.countif(_ == x) / vec.count
   }
   
   /** Get the joint probability P(X=x,Y=y) of an event (x,y) when sampling from two random variables.
@@ -130,11 +147,14 @@ object ProbabilityEstimator {
     
     //Get the data as a matrix
     var mat = f.toMat
+    //Count all locations with missing values
+    val nanRows = mat.rowsWithNA.size
+    
     //Find where X=x and Y=y
     var bothTrue = (mat.col(0) =? x) && (mat.col(1) =? y)
     bothTrue = bothTrue.filter(_ == true)
     //Normalise to get probability
-    return 1.0* bothTrue.length / f.numRows;
+    return 1.0* bothTrue.length / (f.numRows - nanRows)
   }
   
   /*

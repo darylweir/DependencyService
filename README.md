@@ -25,7 +25,9 @@ In both cases, the testing harness is quite lightweight and doesn't necessarily 
 
 As mentioned above, one area for improvement is the coverage of the testing harness. Other areas include:
 
-* The code to estimate probabilities and mutual information is just a simple maximum-likelihood approach that counts occurences of the different values in the data. Given the data is quite small, these estimates could be quite biased. It might be worth trying a MAP approach and include some prior knowledge in the calculation (if such knowledge exists).
+* The code to estimate probabilities and mutual information is just a simple maximum-likelihood approach that counts occurences of the different values in the data. Given the data is quite small, these estimates could be quite biased. It might be worth trying a MAP approach and include some prior knowledge in the calculation (if such knowledge exists. 
+
+* Missing value handling: currently I just reduce the dataset to the smallest set that has no missing values. However, this can get rid of over half the examples in for some features. It would be good to try and impute the missing values to improve robustness of probability and MI estimates.
 
 * Currently, the API is just one method and so I didn't implement any authentication, rate limiting on requests, timeout behaviour, or similar. In a production API, particularly where the API can be used to modify data and not just read it, these features would be needed. 
 
