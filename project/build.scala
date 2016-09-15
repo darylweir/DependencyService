@@ -24,6 +24,7 @@ object DependencyServiceBuild extends Build {
       resolvers += Classpaths.typesafeReleases,
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
       resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
+      resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
@@ -32,7 +33,8 @@ object DependencyServiceBuild extends Build {
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
         "org.scala-saddle" %% "saddle-core" % "1.3.+",
-        "org.scalanlp" %% "breeze" % "0.12"
+        "org.scalactic" %% "scalactic" % "3.0.0",
+        "org.scalatest" %% "scalatest" % "3.0.0" % "test"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(

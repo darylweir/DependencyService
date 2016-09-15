@@ -60,18 +60,17 @@ object ProbabilityEstimator {
     val c1 = data.col(col1)
     val c2 = data.col(col2)
     val c3 = data.col(col1,col2)
-    c3.print(36,2)
     
     //I(X,Y) = sum_x sum_y p(x,y)*log[ p(x,y) / (p(x)p(y)) ]
     var result = 0.0
     for (x <- classes1) {
       val px = probability(x,c1)
-      println("p(x="+x+") = "+px)
+//      println("p(x="+x+") = "+px)
       for (y <- classes2) {
         val py = probability(y,c2)
-        println("p(y="+y+") = "+py)
+//        println("p(y="+y+") = "+py)
         val pxy = jointProbability(x, y, c3)
-        println("p("+x+","+y+") = "+pxy)
+//        println("p("+x+","+y+") = "+pxy)
         //0*log0 and 0*log(0/0) both equal 0 by convention 
         if (px != 0.0 && py != 0.0 && pxy != 0.0) {
           result += pxy*log2(pxy / (px*py))
@@ -79,7 +78,6 @@ object ProbabilityEstimator {
         
       }
     }
-    println(result)
     return result
   }
   
