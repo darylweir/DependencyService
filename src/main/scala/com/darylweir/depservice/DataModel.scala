@@ -36,17 +36,6 @@ class DataModel {
     store = store + (key -> (list.sortBy { x => -x.mi } toList))
   }
   
-  var temp = data.col("result_new_doors_were_opened","retrospectives")
-  var total = 0.0
-  for (i <- UNIQUE_CLASSES) {
-    for (j <- UNIQUE_CLASSES) {
-      var p = ProbabilityEstimator.jointProbability(i, j, temp)
-      total += p
-      println(i+" "+j+" "+p)
-    }
-  }
-  println(total)
-  
   
   /**Gets the dependency list for a given variable in the dataset.
    * 
@@ -88,6 +77,7 @@ object ProbabilityEstimator {
    *  @param classes2, a list of the possible values of the second variable
    *  @param col1 the String index for the first variable in data
    *  @param col2 the String index for the second variable in data
+   *  @return the estimate of the mutual information I(X; Y) from the sample in data
    *  @throws IllegalArgumentException if classes1 or classes2 is empty, data has now rows, or data does not contain columns named col1 and col2
    */
   def mutualInformation(data: Frame[String, String, Int], classes1: List[Int], classes2: List[Int], col1: String, col2:String) : Double = {
@@ -119,10 +109,11 @@ object ProbabilityEstimator {
     return result
   }
   
-  /** Get the probability P(X=x) that a random variable equals a specific value x.
+  /** Estimate the probability P(X=x) that a random variable equals a specific value x.
    *  
    *  @param x, the value to estimate the probability of.
    *  @param ser, a 1-column Frame containing a sample of the random variable.
+   *  @return the sample estimate of the probability P(X=x)
    *  @throws IllegalArgumentException if f is empty or has more than one column
    */
   def probability(x: Int, ser: Frame[String, String, Int]) : Double = {
@@ -133,11 +124,12 @@ object ProbabilityEstimator {
     return 1.0 * vec.countif(_ == x) / vec.count
   }
   
-  /** Get the joint probability P(X=x,Y=y) of an event (x,y) when sampling from two random variables.
+  /** Estimate the joint probability P(X=x,Y=y) of an event (x,y) when sampling from two random variables.
    *  
    *  @param x, the value for the first random variable
    *  @param y, the value for the second random variable
    *  @param f, a 2-column Frame with observations of X in the first column and observations of Y in the second
+   *  @return the probability p(X=x,Y=y)
    *  @throws IllegalArgumentException if f has no rows or more/less than 2 columns
    */
   def jointProbability(x: Int, y: Int, f: Frame[String, String, Int]) : Double = {
@@ -157,9 +149,11 @@ object ProbabilityEstimator {
     return 1.0* bothTrue.length / (f.numRows - nanRows)
   }
   
-  /*
-   * Gets the logarithm to the base 2 of parameter x.
+  /**Gets the logarithm to the base 2 of parameter x.
+   * 
    * Simple change of basis formula, log_a(x) = log_b(x) / log_b(a)
+   * @param x, the value to take the log of
+   * @return the log to the base 2 of x
    */
   private def log2(x: Double) : Double = log(x) / log(2)
   

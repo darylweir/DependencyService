@@ -11,7 +11,7 @@ object DependencyServiceBuild extends Build {
   val Name = "DependencyService"
   val Version = "0.1"
   val ScalaVersion = "2.11.8"
-  val ScalatraVersion = "2.4.1"
+  val ScalatraVersion = "2.4.0.RC1"
 
   lazy val project = Project (
     "depservice",
@@ -29,12 +29,19 @@ object DependencyServiceBuild extends Build {
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
+        "org.scalatra" %% "scalatra-json" % "2.3.0",
+        "org.json4s"   %% "json4s-jackson" % "3.2.9",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
         "org.scala-saddle" %% "saddle-core" % "1.3.+",
         "org.scalactic" %% "scalactic" % "3.0.0",
         "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+      ),
+      dependencyOverrides := Set(
+      "org.scala-lang" % "scala-library" % ScalaVersion,
+      "org.scala-lang" % "scala-reflect" % ScalaVersion,
+      "org.scala-lang" % "scala-compiler" % ScalaVersion
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
