@@ -36,7 +36,6 @@ class DataModel {
     store = store + (key -> (list.sortBy { x => -x.mi } toList))
   }
   
-
   
   def get(variable: String) : Option[List[Dependency]] = store get variable
   
@@ -92,17 +91,13 @@ object ProbabilityEstimator {
     var result = 0.0
     for (x <- classes1) {
       val px = probability(x,c1)
-//      println("p(x="+x+") = "+px)
       for (y <- classes2) {
         val py = probability(y,c2)
-//        println("p(y="+y+") = "+py)
         val pxy = jointProbability(x, y, c3)
-//        println("p("+x+","+y+") = "+pxy)
         //0*log0 and 0*log(0/0) both equal 0 by convention 
         if (px != 0.0 && py != 0.0 && pxy != 0.0) {
           result += pxy*log2(pxy / (px*py))
         }
-        
       }
     }
     return result

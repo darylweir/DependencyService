@@ -52,6 +52,8 @@ jrebel.lic
 .settings
 .classpath
 .project
+.cache-tests
+.cache-main
 
 .ensime*
 *.sublime-*
