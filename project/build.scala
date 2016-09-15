@@ -32,8 +32,10 @@ object DependencyServiceBuild extends Build {
         "org.scalatra" %% "scalatra-json" % "2.3.0",
         "org.json4s"   %% "json4s-jackson" % "3.2.9",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
-        "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container;provided",
-        "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
+        "org.mortbay.jetty" % "jetty" % "6.1.22" % "container",
+        "org.eclipse.jetty" % "jetty-webapp" % "8.1.7.v20120910" % "compile",
+        "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "compile;provided;test" artifacts (Artifact("javax.servlet", "jar", "jar")),
+        "javax.servlet" % "javax.servlet-api" % "3.1.0" % "compile;container;provided",
         "org.scala-saddle" %% "saddle-core" % "1.3.+",
         "org.scalactic" %% "scalactic" % "3.0.0",
         "org.scalatest" %% "scalatest" % "3.0.0" % "test"
