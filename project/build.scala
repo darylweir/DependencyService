@@ -28,7 +28,7 @@ object DependencyServiceBuild extends Build {
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
-        "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
+        "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
         "org.scalatra" %% "scalatra-json" % "2.3.0",
         "org.json4s"   %% "json4s-jackson" % "3.2.9",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",

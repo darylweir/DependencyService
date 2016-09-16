@@ -1,18 +1,43 @@
 package com.darylweir.depservice
 
-import org.scalatra.test.specs2._
+import org.scalatra.test.scalatest._
 
-// For more on Specs2, see http://etorreborre.github.com/specs2/guide/org.specs2.guide.QuickStart.html
-class CoreServletSpec extends ScalatraSpec { 
+/**Lightweight test harness for the web service at /dependencies
+ * 
+ */
+class CoreServletSpec extends ScalatraFlatSpec { 
   
-  def is =
-  "GET / on CoreServlet"                     ^
-    "should return status 200"                  ! root200^
-                                                end
 
   addServlet(classOf[CoreServlet], "/*")
-
-  def root200 = get("/") {
-    status must_== 200
+  
+  "The web service" should "return a success code for a valid request" in {
+    get("/dependencies?variable=ux_kickstart") {
+      status should equal (200)
+    }
   }
+  
+  it should "return a 404 code when a bad variable is passed" in {
+    get("/dependencies?variable=missingkey") {
+      status should equal (404)
+    }
+  }
+  
+  it should "return a 400 code when no variable is passed" in {
+    get("/dependencies") {
+      status should equal (400)
+    }
+  }
+  
+  it should "return a 404 code for invalid urls" in {
+    get("/dependencies42") {
+      status should equal (404)
+    }
+  }
+  
+  it should "return a 405 code for invalid HTTP method" in {
+    post("/dependencies?variable=ux_kickstart") {
+      status should equal (405)
+    }
+  }
+
 }

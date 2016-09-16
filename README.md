@@ -17,7 +17,7 @@ However, the contract of the data model is simple and the specific implementatio
 
 I also used [Saddle](https://saddle.github.io/) for loading the CSV file and representing/calculating with the data to obtain the mutual information. The library approximates Pandas in scientific python, and simplified the process of data analysis and file parsing significantly. Libraries like Spark seemed a bit too heavyweight for what I needed to do in this assignment.
 
-**Testing:** I used [ScalaTest](http://www.scalatest.org/) to unit test the probability code and data model I wrote, and Scalatra's Specs2 library to test the web service. 
+**Testing:** I used [ScalaTest](http://www.scalatest.org/) to unit test the probability code and data model I wrote, and Scalatra's ScalaTest extensions to test the web service. 
 
 In both cases, the testing harness is quite lightweight and doesn't necessarily cover the full range of edge cases that might exist. In a real project obviously this would be a bigger concern, but here I just wanted a "good enough" solution.
 
@@ -27,11 +27,11 @@ As mentioned above, one area for improvement is the coverage of the testing harn
 
 * The code to estimate probabilities and mutual information is just a simple maximum-likelihood approach that counts occurences of the different values in the data. Given the data is quite small, these estimates could be quite biased. It might be worth trying a MAP approach and include some prior knowledge in the calculation (if such knowledge exists. 
 
-* Missing value handling: currently I just reduce the dataset to the smallest set that has no missing values. However, this can get rid of over half the examples in for some features. It would be good to try and impute the missing values to improve robustness of probability and MI estimates.
+* Missing value handling: currently I just reduce the dataset to the smallest set that has no missing values (for each feature or pair of features, not globally). However, this can get rid of over half the examples in for some features. It would be good to try and impute the missing values to improve robustness of probability and MI estimates.
 
 * Currently, the API is just one method and so I didn't implement any authentication, rate limiting on requests, timeout behaviour, or similar. In a production API, particularly where the API can be used to modify data and not just read it, these features would be needed. 
 
-* The documentation could be improved - currently it's limited to ScalaDoc style comments (although I haven't actually generated any ScalaDoc). The Scalatra library supports [Swagger](http://swagger.io/), a tool to generate interactive documentation and add discoverability in the API. If it were to be extended or used in production, such a feature could be useful.
+* The documentation could be improved - currently it's limited to ScalaDoc style comments (although I haven't actually generated any ScalaDoc). The Scalatra library supports [Swagger](http://swagger.io/), a tool to generate interactive documentation and add discoverability in the API. If the API were to be extended or used in production, such a feature could be useful.
 
 ## Build & Run ##
 
@@ -44,7 +44,7 @@ $ ./sbt
 
 If `browse` doesn't launch your browser, manually open [http://localhost:8080/](http://localhost:8080/) in your browser.
 
-To test the API locally once jetty is running, visit http://localhost:8080/dependencies?variable=<name_of_variable>, where <name_of_variable> is one of: 
+To test the API locally once jetty is running, visit http://localhost:8080/dependencies?variable=[name_of_variable], where [name_of_variable] is one of: 
 
 ```
 customer_understands_products

@@ -95,4 +95,29 @@ class DataModelSpec extends FlatSpec {
     }
   }
   
+  val dm = new DataModel
+  
+  "A DataModel" should "correctly test whether keys are valid or not" in {
+    assert(dm.contains("ux_kickstart"))
+    assert(!dm.contains("missingkey"))
+  }
+  
+  it should "return a List of Dependency when a key is present, and none otherwise." in {
+    var list = false;
+    var none = false;
+    
+    list = dm.get("ux_kickstart") match {
+      case Some(x) => true
+      case None => false
+    }
+    
+    none = dm.get("missingkey") match {
+      case Some(x) => false
+      case None => true
+    }
+    
+    assert(list)
+    assert(none)
+  }
+  
 }
