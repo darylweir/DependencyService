@@ -1,6 +1,6 @@
 # Dependency Service #
 
-A simple web service built on Scalatra to provide some analytics on data from software projects.
+A simple web service built on Scalatra to provide some analytics on data from software projects. Available to test online at [stark-meadow-21658.herokuapp.com/dependencies](https://stark-meadow-21658.herokuapp.com/dependencies)
 
 **Implements:** a GET API at /dependencies which takes a query parameter named 'variable' and returns a list of JSON objects with two fields:
 * `variable`, the name of the dependent variable
@@ -77,4 +77,14 @@ acceptance_testing
 customer_as_product_owner
 ux_kickstart
 multicompetence_team
+```
+
+## Running tests ##
+
+To run the unit tests, do the following:
+
+```sh
+$ cd DependencyService
+$ ./sbt
+> test
 ```
